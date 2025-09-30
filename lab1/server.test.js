@@ -1,6 +1,6 @@
 const request = require('supertest');
 const { app, server } = require('./server');
-
+require('dotenv').config();
 describe('Express Server Tests', () => {
   afterAll((done) => {
     server.close(done);
@@ -11,7 +11,8 @@ describe('Express Server Tests', () => {
 
     expect(response.status).toBe(200);
     expect(response.text).toMatch(/Hello, world\. My name is \w+/);
-    expect(response.text).toContain('MyAwesomeServer');
+    const serverName = process.env.SERVER_NAME || 'Unknown';
+    expect(response.text).toContain(serverName);
   });
 
   test('GET / should handle missing SERVER_NAME gracefully', async () => {
